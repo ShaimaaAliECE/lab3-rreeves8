@@ -1,0 +1,13 @@
+input[type=text], input[type=password] { 
+    width: 20%;
+    height: 10%;
+    margin-left: -10px;
+    display: inline-block; 
+    border: 2px solid green; 
+    box-sizing: border-box; 
+}
+
+img{
+    width: 80%; /* you can use % */
+    height: 80%;
+}
