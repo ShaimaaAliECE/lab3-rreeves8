@@ -30,16 +30,20 @@ class LogIn extends Component{
     }
 
     async logIn(){
+        console.log(this.state.credentials.usr)
         console.log(this.state.credentials.password)
-        const res = await api.post('/api/login', {
+        const response = await api.post('/api/login', {
             ...this.state.credentials
-        });
-        if(res.data === 'good'){
-            this.state.handleClick('admin')
-        }
-        if(res.data === 'invalid'){
-            console.log('bad entry')
-        }
+        }).then((response) =>{   
+            if(response.data === 'good'){
+                this.state.handleClick('admin')
+            }
+            if(response.data === 'invalid'){
+                console.log('bad entry')
+            }
+        }, (error) => {
+            console.log(response)
+        })
     }
 
     handleChange(event) {
@@ -85,10 +89,14 @@ class LogIn extends Component{
                 <div class = 'container'>
                     <h1> Log In Type </h1>
                     <div>
-                        <label>Username : </label>   
-                        <input value = {this.state.credentials.usr} onChange={this.handleChange} type="text" placeholder="Enter Username" name="username" />  
-                        <label>Password : </label>
-                        <input value = {this.state.credentials.password} onChange={this.handleChange} type="password" placeholder="Enter Password" name="password" /> 
+                        <ul>
+                            <label>Username : </label>   
+                            <input value = {this.state.credentials.usr} onChange={this.handleChange} type="text" placeholder="Enter Username" name="username" />  
+                        </ul>
+                        <ul>
+                            <label>Password : </label>
+                            <input value = {this.state.credentials.password} onChange={this.handleChange} type="password" placeholder="Enter Password" name="password" />
+                        </ul> 
                         <button className = 'entry' onClick = {() => this.logIn()}>LogIn</button>
                     </div>
                 </div>

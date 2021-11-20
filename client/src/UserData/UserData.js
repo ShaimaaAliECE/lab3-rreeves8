@@ -1,83 +1,85 @@
 import React, { Component , useState } from 'react'
 import api from '../api/api';
 import './UserData.css'
-import CheckBox from './CheckBox'
-
-function Rows(props){
-    let rows = [];
-    console.log(props.availability)
-    console.log(props.timeSlots)
-    
-    for(let i = 0; i < 5;i++){
-       
-    }
-    return(
-        <div></div>
-    )
-}
+import NewEntry from './NewEntry';
+import Row from './Row'
 
 
-class UserData extends Component{
+class UserData extends Component{ 
     constructor(){
         super();
         this.state = {
-            name: '',
-            availability: ''
+            availability: null,
+            otherUsers: null
         }
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.getAvailable = this.getAvailable.bind(this)
+
     }
 
-    async sendNewentry(values){
-        const res = await api.post('/api/newTimeSlot', {
-            ...values
-        })
-        console.log(res)
-    }
-
-    async getAvailable() {
-        try {
-            const {data:response} = await api.get('/api/availability') //use data destructuring to get data from the promise object
-            return response
+    async getOtherUsers () {
+        console.log("fetching other users")
+        try{
+            const response = await api.get('/api/getOtherUsers')
+            console.log(response)
+            console.log(response.data)
+            this.setState({
+                otherUsers: response.data,
+            })
         }
-    
-        catch (error) {
-            console.log(error);
+        catch(err){
+            console.log(err)
+        }
+
+    }
+
+    getAvailable = async () => {
+        console.log("fetching available")
+        try{
+            const response = await api.get('/api/availability')
+            console.log(response)
+            console.log(response.data)
+            this.setState({
+                availability: response.data[0],
+            })
+        }
+        catch(err){
+            console.log(err)
         }
     }
 
-    async getTimeSlots () {
-        const response = await api.get('/api/timeSlots')
-        return response.data
-    }
 
-    handleKeyPress = (event) => {
-        this.setState({
-            name: event.target.value
-        }) 
-    }
+    render(){
+        if(this.state.availability === null){
+            this.getAvailable()
+            /*
+            this.setState({
+                availability: [true,true,true,true,true,true,true,true,true,true]
+            })
+            */
+        }
+        if(this.state.otherUsers === null){
+            this.getOtherUsers()
+        }
 
-    render(){  
-        let available = this.getAvailable();
-        let timeSlots = this.getTimeSlots();
-        console.log(available[0])
-
-        return (
-            <div>
-                <Rows
-                    availability = {available}
-                    timeSlots = {timeSlots}
-                />
-                <ul> 
-                    <input 
-                        value = {this.state.name}   
-                        onChange = {this.handleKeyPress} 
-                        type="text" 
-                        placeholder="Enter Name"/>
-                    <CheckBox
-                        type = 'NewEntry'/> 
-                </ul>
-            </div> 
+        if((this.state.availability !== null) && (this.state.otherUsers !== null)){
+            let collumns = []
+            for(let i = 0; i < this.state.otherUsers.length;i++){
+                    collumns[i] = <Row users = {this.state.otherUsers[i]}/>
+            
+            }
+        
+            return (
+                <div>
+                    {collumns}
+                    <NewEntry
+                        availability = {this.state.availability}/> 
+                </div> 
+            )
+        }
+        return(
+            <div></div>
         )
+        
     }
 }
 

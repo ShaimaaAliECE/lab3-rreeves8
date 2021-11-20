@@ -1,13 +1,40 @@
-input[type=text], input[type=password] { 
+input[type=name]{ 
     width: 20%;
-    height: 10%;
+    height: 50px;
     margin-left: -10px;
     display: inline-block; 
     border: 2px solid green; 
     box-sizing: border-box; 
 }
 
+.message{
+    text-align: center;
+    font-size:12pt;
+}
+.spaceFill{
+    margin: 20%;
+}
+
+button.submit{
+    transform: translateX(-20px);
+}
+
 img{
     width: 80%; /* you can use % */
     height: 80%;
 }
+ul{
+    padding: 10;
+    display: flex;
+  }
+  
+  li{
+    list-style-type: none;  
+    margin: 0 1.6vw;
+    font-size: 2.65vh;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+    font-family: monospace;
+  }
