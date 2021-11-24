@@ -11,7 +11,7 @@ var jsonParser = bodyParser.json()
  
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-app.get('*', (req, res) => {                       
+app.get('/', (req, res) => {                       
     res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));                               
   });
 
