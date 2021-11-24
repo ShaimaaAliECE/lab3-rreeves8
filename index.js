@@ -36,6 +36,7 @@ app.get('/api/availability', (request,response) => {
     conn.query("SELECT * FROM availability;",(err,rows,feilds) => {
         if(err){
             response.send("error: " + err)
+            console.log(err)
         }
         else{
             response.json(rows)
