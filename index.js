@@ -5,11 +5,16 @@ const newConnection = require('./DBConnection')
 var bodyParser = require('body-parser')
 const { urlencoded } = require('body-parser')
 
-app.use(express.static(path.join(__dirname,'..client/build')))
+app.use(express.static(path.join(__dirname,'./client/build')))
 
 var jsonParser = bodyParser.json()
  
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+app.get('*', (req, res) => {                       
+    res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));                               
+  });
+
 
 app.get('/api/getOtherUsers', (request,response) => {
     let conn = newConnection();
